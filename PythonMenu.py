@@ -31,11 +31,15 @@ GRID_COLUMNS = 3
 CELL_WIDTH = SCREEN_WIDTH // GRID_COLUMNS
 CELL_PADDING = 50
 # Initialize the screen
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
+#screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
+screen = None
 #screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Menu")
 
 python_script = "test.py"
+
+screen_open = True
+screen = None
 
 menu_items = None
 menu_images = None
@@ -47,13 +51,21 @@ def init_screen():
     return pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
 
 # Add a function to close the Pygame screen
-def close_screen(screen):
-    pygame.quit()
+def close_screen():
+    global screen, screen_open
+    screen_open = False
+    if screen is not None:
+        pygame.quit()
+        screen = None
 
 # Add a function to open the Pygame screen
 def open_screen():
-    pygame.init()
-    return init_screen()
+    global screen, screen_open
+    if screen is None:
+        pygame.init()
+        screen = init_screen()
+        screen_open = True
+    return screen
 
 # Define the menu items and corresponding commands
 def get_menu_items(folder_path):
@@ -78,9 +90,10 @@ def get_menu_images(folder_path, menu_items):
 #def event_listener():
 
 def run_vlc(folder_path, video_file):
+    global screen
     try:
-        close_screen(screen)
-#        vlc_command = f"sudo -u twilliams /Applications/VLC.app/Contents/MacOS/VLC '{folder_path}{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
+        close_screen()
+ #       vlc_command = f"sudo -u twilliams /Applications/VLC.app/Contents/MacOS/VLC '{folder_path}{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
         vlc_command = f"sudo -u pi cvlc '{folder_path}{video_file}' --no-repeat --play-and-exit --fullscreen --no-xlib"  # Replace with the appropriate VLC command
         open_screen()
         process = subprocess.Popen(vlc_command, shell=True)
@@ -258,11 +271,13 @@ def main():
     '''
 
     while True:
-        if screen is not None:
+        if screen_open is not False:
             draw_menu(selected_item, menu_items, menu_images)
 
     
 
 
 if __name__ == "__main__":
+    screen = open_screen()  # Open the Pygame screen at the beginning
     main()
+    close_screen()
