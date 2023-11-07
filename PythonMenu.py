@@ -30,7 +30,7 @@ GRID_COLUMNS = 3
 CELL_WIDTH = SCREEN_WIDTH // GRID_COLUMNS
 CELL_PADDING = 50
 # Initialize the screen
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
 #screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Menu")
 
