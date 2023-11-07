@@ -39,9 +39,8 @@ python_script = "test.py"
 menu_items = None
 menu_images = None
 selected_item = 0
-
-#    folder_path = "/mnt/usbdrive0/"
-folder_path = "./TestExposureRaspi/TestVideos/"
+folder_path = "/mnt/usbdrive0/"
+#folder_path = "./TestExposureRaspi/TestVideos/"
 
 # Define the menu items and corresponding commands
 def get_menu_items(folder_path):
@@ -67,8 +66,8 @@ def get_menu_images(folder_path, menu_items):
 
 def run_vlc(folder_path, video_file):
     try:
-        vlc_command = f"sudo -u twilliams /Applications/VLC.app/Contents/MacOS/VLC '{folder_path}{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
-#        vlc_command = f"sudo -u pi cvlc '{folder_path}{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
+#        vlc_command = f"sudo -u twilliams /Applications/VLC.app/Contents/MacOS/VLC '{folder_path}{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
+        vlc_command = f"sudo -u pi cvlc '{folder_path}{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
         process = subprocess.Popen(vlc_command, shell=True)
         process.wait()
     except Exception as e:
