@@ -39,7 +39,7 @@ python_script = "test.py"
 menu_items = None
 menu_images = None
 selected_item = 0
-folder_path = "/mnt/usbdrive0/"
+folder_path = "/mnt/usbdrive0/TestExposureRaspi/TestVideos/"
 #folder_path = "./TestExposureRaspi/TestVideos/"
 
 # Define the menu items and corresponding commands
