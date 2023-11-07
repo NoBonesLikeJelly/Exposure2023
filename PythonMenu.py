@@ -229,6 +229,8 @@ def main():
                         update_position("right")
                     elif event.name == "enter" or event.name == "return":
                         update_position("enter")
+                    elif event.name == "esc":
+                        pygame.quit()
 
     keyboard_thread = threading.Thread(target=keyboard_listener)
     keyboard_thread.daemon = True
