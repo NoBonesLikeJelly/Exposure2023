@@ -258,8 +258,8 @@ def main():
     '''
 
     while True:
-        
-        draw_menu(selected_item, menu_items, menu_images)
+        if screen is not None:
+            draw_menu(selected_item, menu_items, menu_images)
 
     
 
