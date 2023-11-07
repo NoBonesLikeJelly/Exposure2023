@@ -67,7 +67,7 @@ def get_menu_images(folder_path, menu_items):
 def run_vlc(folder_path, video_file):
     try:
 #        vlc_command = f"sudo -u twilliams /Applications/VLC.app/Contents/MacOS/VLC '{folder_path}{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
-        vlc_command = f"sudo -u pi cvlc '{folder_path}{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
+        vlc_command = f"sudo -u pi cvlc '{folder_path}{video_file}' --no-repeat --play-and-exit"  # Replace with the appropriate VLC command
         process = subprocess.Popen(vlc_command, shell=True)
         process.wait()
     except Exception as e:
