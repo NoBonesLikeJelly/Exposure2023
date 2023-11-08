@@ -23,7 +23,7 @@ def getKey():
         data = data.strip()
 
         if (len(data) > 0):
-              break
+            break
         
         words = data.split()
         return words[2], words[1]
