@@ -105,6 +105,7 @@ def stop_video(event):
     global video_playing, player
     print("Video ended!")
     player.stop()
+    player.release()
     load_menu()
     video_playing = False
 
@@ -174,7 +175,4 @@ if __name__ == "__main__":
                             pygame.quit()
 
     # Clean up when done
-    if vlc_player is not None:
-        vlc_player.terminate()
-
     pygame.quit()
