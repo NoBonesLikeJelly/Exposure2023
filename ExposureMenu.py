@@ -12,7 +12,8 @@ screen_width = 800
 screen_height = 600
 screen = pygame.display.set_mode((screen_width, screen_height))
 
-folder_path = "./TestExposureRaspi/TestVideos/"
+#folder_path = "./TestExposureRaspi/TestVideos/"
+folder_path = "/mnt/usbdrive0/TestExposureRaspi/TestVideos/"
 
 # Global variables
 selected_video = None
@@ -60,7 +61,8 @@ def display_menu(video_list):
 # Function to play the selected video using VLC
 def play_video(video_file):
     try:
-        vlc_command = f"cvlc '{folder_path}{video_file}' --no-repeat --play-and-exit --fullscreen --no-xlib"
+        #vlc_command = f"cvlc '{folder_path}{video_file}' --no-repeat --play-and-exit --fullscreen --no-xlib"
+        vlc_command = f"sudo -u pi cvlc '{folder_path}{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
         subprocess.Popen(vlc_command, shell=True)
     except Exception as e:
         print(f"Error running VLC: {e}")
