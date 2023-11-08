@@ -40,6 +40,10 @@ def display_menu(video_list):
                     selected_index = min(len(video_list) - 1, selected_index + 1)
                 elif event.key == pygame.K_RETURN:
                     selected_video = video_list[selected_index]
+                elif event.key == pygame.K_SPACE:
+                    selected_video = video_list[selected_index]
+                elif event.key == pygame.K_ESCAPE:
+                    pygame.quit()   
     
 
         screen.fill((0, 0, 0))
