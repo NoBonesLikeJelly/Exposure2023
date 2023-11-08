@@ -64,23 +64,17 @@ def init_irw():
 def next_key():
     '''Get the next key pressed. Return keyname, updown.
     '''
-    data = b''  # Initialize an empty bytes object to collect the data
     while True:
-        chunk = sock.recv(128)
-        if not chunk:
+        data = sock.recv(128)
+        # print("Data: " + data)
+        data = data.strip()
+        if data:
             break
-        data += chunk
 
-    responses = data.split()  # Split data into individual responses based on a delimiter (e.g., newline)
-    
-    for response in responses:
-        print(response)
-        response = response.strip()
-        if response:
-            words = response.split()
-            time.sleep(0.5)  # Add a delay in seconds
-            return words[2], words[1]  # Return the first response and exit the function
+    words = data.split()
+    print(words.strip())
 
+    return words[2], words[1]
 
 def play_video(video_file):
     global vlc_player, video_playing
