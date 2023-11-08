@@ -6,7 +6,6 @@ import socket
 import time
 from pygame.locals import *
 
-
 SOCKPATH = "/var/run/lirc/lircd"
 
 sock = None
@@ -54,6 +53,25 @@ def load_menu():
     font = pygame.font.Font(None, 36)
     return screen, font
 
+def init_irw():
+    global sock
+    sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    print ('starting up on %s' % SOCKPATH)
+    sock.connect(SOCKPATH)
+
+def next_key():
+    '''Get the next key pressed. Return keyname, updown.
+    '''
+    while True:
+        data = sock.recv(128)
+        # print("Data: " + data)
+        data = data.strip()
+        if data:
+            break
+
+    words = data.split()
+    return words[2], words[1]
+
 def play_video(video_file):
     global vlc_player, video_playing
     if vlc_player is not None:
@@ -70,10 +88,9 @@ def play_video(video_file):
 
 
 def input_listener():
-    return
-    #time.sleep(5)
-    #selected_video = os.path.join(video_directory, video_files[selected_index])
-    #play_video(selected_video)
+    while True:
+        keyname, updown = next_key()
+        print('%s (%s)' % (keyname, updown))
 
 
 selected_index = 0
@@ -82,6 +99,7 @@ selected_index = 0
 
 if __name__ == "__main__":
 
+    init_irw()
 
     input_thread = threading.Thread(target=input_listener)
     input_thread.daemon = True
