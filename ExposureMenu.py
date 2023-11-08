@@ -5,7 +5,6 @@ import pygame
 import socket
 import time
 from pygame.locals import *
-import vlc
 
 SOCKPATH = "/var/run/lirc/lircd"
 
@@ -43,8 +42,6 @@ SCREEN_HEIGHT = None
 # Initialize VLC subprocess
 vlc_player = None
 
-instance = vlc.Instance()
-player = instance.media_player_new()
 
 def load_menu():
     global screen, font, SCREEN_WIDTH, SCREEN_HEIGHT
@@ -84,7 +81,7 @@ def next_key():
     return words[2], words[1]
 
 def play_video(video_file):
-    global vlc_player, video_playing, player
+    global vlc_player, video_playing, playergit revert 
 
     media = instance.media_new(video_file)
     player.set_media(media)
