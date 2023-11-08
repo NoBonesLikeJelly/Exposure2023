@@ -90,17 +90,16 @@ def play_video(video_file):
 def input_listener():
     while True:
         keyname, updown = next_key()
-        if str(keyname) == "KEY_DOWN":
+        if keyname.decode('utf-8') == "KEY_DOWN":
             selected_index = (selected_index + 1) % len(video_files)
-        elif str(keyname) == "KEY_UP":
+        elif keyname.decode('utf-8') == "KEY_UP":
             selected_index = (selected_index - 1) % len(video_files)
-        elif str(keyname) == "KEY_OK":
+        elif keyname.decode('utf-8') == "KEY_OK":
             selected_video = os.path.join(video_directory, video_files[selected_index])
             play_video(selected_video)
-        elif str(keyname) == "KEY_BACK":
+        elif keyname.decode('utf-8') == "KEY_BACK":
             pygame.quit()
-        print('%s (%s)' % (keyname, updown))
-        print(str(keyname))
+        print(keyname.decode('utf-8'))
 
 
 selected_index = 0
