@@ -79,7 +79,7 @@ def next_key():
 
     words = data.split()
     print("Checking other format...")
-    print(words)
+    print(words[2])
 
     return words[2], words[1]
 
