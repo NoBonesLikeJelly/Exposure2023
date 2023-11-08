@@ -60,6 +60,7 @@ def load_menu():
 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     font = pygame.font.Font(None, 36)
+    pygame.mouse.set_visible(False)
     return screen, font
 
 def init_irw():
@@ -105,7 +106,7 @@ def input_listener():
     global selected_index, vlc_player, ir_selected, video_playing
     while True:
         if video_playing:
-            return
+            pass
         else:
             keyname, updown = next_key()
             if keyname.decode('utf-8') == "KEY_DOWN" and updown.decode('utf-8') == "00":
