@@ -46,13 +46,6 @@ vlc_player = None
 instance = vlc.Instance()
 player = instance.media_player_new()
 
-video_file = video_file = "/mnt/usbdrive0/In_Her_Steps.mov"
-media = instance.media_new(video_file)
-player.set_media(media)
-
-player.set_fullscreen(True)
-
-
 def load_menu():
     global screen, font, SCREEN_WIDTH, SCREEN_HEIGHT
     # Pygame initialization
@@ -91,15 +84,22 @@ def next_key():
     return words[2], words[1]
 
 def play_video(video_file):
-    global vlc_player, video_playing
-    if vlc_player is not None:
-        vlc_player.terminate()
+    global vlc_player, video_playing, player
+
+    media = instance.media_new(video_file)
+    player.set_media(media)
+    player.set_fullscreen(True)
+    player.play()
+    #if vlc_player is not None:
+    #    vlc_player.terminate()
     video_playing = True
     pygame.quit()
-    vlc_command = f"sudo -u twilliams /Applications/VLC.app/Contents/MacOS/VLC '{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
+    #vlc_command = f"sudo -u twilliams /Applications/VLC.app/Contents/MacOS/VLC '{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
     #vlc_command = f"cvlc '{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
-    vlc_player = subprocess.Popen(vlc_command, shell=True)
-    vlc_player.wait()
+    #vlc_player = subprocess.Popen(vlc_command, shell=True)
+    #vlc_player.wait()
+    events = player.event_manager()
+    events.event_attach(vlc.EventType.MediaPlayerEndReached, player.stop())
     load_menu()
     video_playing = False
 
@@ -108,34 +108,34 @@ def play_video(video_file):
 def input_listener():
     global selected_index
     while True:
-        keyname, updown = next_key()
-        if keyname.decode('utf-8') == "KEY_DOWN" and updown.decode('utf-8') == "00":
-            selected_index = (selected_index + 1) % len(video_files)
-        elif keyname.decode('utf-8') == "KEY_UP" and updown.decode('utf-8') == "00":
-            selected_index = (selected_index - 1) % len(video_files)
-        elif keyname.decode('utf-8') == "KEY_OK" and updown.decode('utf-8') == "00":
-            selected_video = os.path.join(video_directory, video_files[selected_index][0])
-            play_video(selected_video)
-        elif keyname.decode('utf-8') == "KEY_BACK" and updown.decode('utf-8') == "00":
-            pygame.quit()
-        print(keyname.decode('utf-8'))
+        if video_playing:
+            if keyname.decode('utf-8') == "KEY_BACK" and updown.decode('utf-8') == "00":
+                player.stop()
+        else:
+            keyname, updown = next_key()
+            if keyname.decode('utf-8') == "KEY_DOWN" and updown.decode('utf-8') == "00":
+                selected_index = (selected_index + 1) % len(video_files)
+            elif keyname.decode('utf-8') == "KEY_UP" and updown.decode('utf-8') == "00":
+                selected_index = (selected_index - 1) % len(video_files)
+            elif keyname.decode('utf-8') == "KEY_OK" and updown.decode('utf-8') == "00":
+                selected_video = os.path.join(video_directory, video_files[selected_index][0])
+                play_video(selected_video)
+            elif keyname.decode('utf-8') == "KEY_BACK" and updown.decode('utf-8') == "00":
+                pygame.quit()
+            print(keyname.decode('utf-8'))
 
 
 # Main menu loop
 
 if __name__ == "__main__":
 
-    #init_irw()
+    init_irw()
 
     input_thread = threading.Thread(target=input_listener)
     input_thread.daemon = True
     input_thread.start()
 
     load_menu()
-
-    time.sleep(10)
-
-    player.play()
 
     running = True
     while running:
@@ -150,18 +150,23 @@ if __name__ == "__main__":
             pygame.display.flip()
 
             for event in pygame.event.get():
-                if event.type == QUIT:
-                    running = False
-                elif event.type == KEYDOWN:
-                    if event.key == K_DOWN:
-                        selected_index = (selected_index + 1) % len(video_files)
-                    elif event.key == K_UP:
-                        selected_index = (selected_index - 1) % len(video_files)
-                    elif event.key == K_RETURN:
-                        selected_video = os.path.join(video_directory, video_files[selected_index][0])
-                        play_video(selected_video)
-                    elif event.key == K_ESCAPE:
-                        pygame.quit()
+                
+                if video_playing:
+                    if event.key == K_ESCAPE:
+                        player.stop()
+                else:
+                    if event.type == QUIT:
+                        running = False
+                    elif event.type == KEYDOWN:
+                        if event.key == K_DOWN:
+                            selected_index = (selected_index + 1) % len(video_files)
+                        elif event.key == K_UP:
+                            selected_index = (selected_index - 1) % len(video_files)
+                        elif event.key == K_RETURN:
+                            selected_video = os.path.join(video_directory, video_files[selected_index][0])
+                            play_video(selected_video)
+                        elif event.key == K_ESCAPE:
+                            pygame.quit()
 
     # Clean up when done
     if vlc_player is not None:
