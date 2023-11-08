@@ -96,9 +96,9 @@ def play_video(video_file):
     time.sleep(3)
     pygame.quit()
     vlc_player.wait()
+    video_playing = False
     load_menu()
     time.sleep(1)
-    video_playing = False
 
 
 
@@ -146,10 +146,10 @@ if __name__ == "__main__":
 
             pygame.display.flip()
 
-            #if ir_selected:
-                #ir_selected = False
-                #selected_video = os.path.join(video_directory, video_files[selected_index][0])
-                #play_video(selected_video)
+            if ir_selected:
+                ir_selected = False
+                selected_video = os.path.join(video_directory, video_files[selected_index][0])
+                play_video(selected_video)
 
             for event in pygame.event.get():
                 if event.type == QUIT:
