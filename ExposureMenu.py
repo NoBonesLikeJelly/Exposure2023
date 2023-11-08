@@ -6,8 +6,8 @@ import time
 from pygame.locals import *
 
 # Define your video directory and list of video files
-#video_directory = "/mnt/usbdrive0/TestExposureRaspi/TestVideos/"
-video_directory = "./TestExposureRaspi/TestVideos/"
+video_directory = "/mnt/usbdrive0/"
+#video_directory = "./TestExposureRaspi/TestVideos/"
 
 def get_menu_items(video_directory):
     menu_items = []
@@ -54,8 +54,8 @@ def play_video(video_file):
         vlc_player.terminate()
     video_playing = True
     pygame.quit()
-    vlc_command = f"sudo -u twilliams /Applications/VLC.app/Contents/MacOS/VLC '{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
-    #vlc_command = f"cvlc '{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
+    #vlc_command = f"sudo -u twilliams /Applications/VLC.app/Contents/MacOS/VLC '{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
+    vlc_command = f"cvlc '{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
     vlc_player = subprocess.Popen(vlc_command, shell=True)
     vlc_player.wait()
     load_menu()
