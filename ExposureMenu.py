@@ -100,7 +100,7 @@ def input_listener():
         elif str(keyname) == "KEY_BACK":
             pygame.quit()
         print('%s (%s)' % (keyname, updown))
-        print(keyname)
+        print(str(keyname))
 
 
 selected_index = 0
