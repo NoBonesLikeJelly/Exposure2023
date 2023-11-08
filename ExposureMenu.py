@@ -11,8 +11,8 @@ SOCKPATH = "/var/run/lirc/lircd"
 sock = None
 
 # Define your video directory and list of video files
-#video_directory = "/mnt/usbdrive0/"
-video_directory = "./TestExposureRaspi/TestVideos/"
+video_directory = "/mnt/usbdrive0/"
+#video_directory = "./TestExposureRaspi/TestVideos/"
 
 selected_index = 0
 
@@ -88,8 +88,8 @@ def play_video(video_file):
         vlc_player.terminate()
     video_playing = True
     pygame.quit()
-    vlc_command = f"sudo -u twilliams /Applications/VLC.app/Contents/MacOS/VLC '{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
-    #vlc_command = f"cvlc '{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
+    #vlc_command = f"sudo -u twilliams /Applications/VLC.app/Contents/MacOS/VLC '{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
+    vlc_command = f"cvlc '{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
     vlc_player = subprocess.Popen(vlc_command, shell=True)
     vlc_player.wait()
     load_menu()
@@ -98,7 +98,7 @@ def play_video(video_file):
 
 
 def input_listener():
-    global selected_index
+    global selected_index, vlc_player
     while True:
         keyname, updown = next_key()
         if keyname.decode('utf-8') == "KEY_DOWN" and updown.decode('utf-8') == "00":
@@ -109,7 +109,12 @@ def input_listener():
             selected_video = os.path.join(video_directory, video_files[selected_index][0])
             play_video(selected_video)
         elif keyname.decode('utf-8') == "KEY_BACK" and updown.decode('utf-8') == "00":
-            pygame.quit()
+            if video_playing:
+                vlc_player.terminate()
+                load_menu()
+                video_playing = False
+            else:
+                pygame.quit()
         print(keyname.decode('utf-8'))
 
 
