@@ -74,6 +74,7 @@ def next_key():
     responses = data.split()  # Split data into individual responses based on a delimiter (e.g., newline)
     
     for response in responses:
+        print(response)
         response = response.strip()
         if response:
             words = response.split()
