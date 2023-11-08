@@ -143,6 +143,7 @@ if __name__ == "__main__":
 
             if ir_selected:
                 ir_selected = False
+                selected_video = os.path.join(video_directory, video_files[selected_index][0])
                 play_video(selected_video)
 
             for event in pygame.event.get():
