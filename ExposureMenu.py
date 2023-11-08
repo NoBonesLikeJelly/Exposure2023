@@ -93,6 +93,7 @@ def play_video(video_file):
     pygame.quit()
     vlc_player.wait()
     load_menu()
+    time.sleep(1)
     video_playing = False
 
 
