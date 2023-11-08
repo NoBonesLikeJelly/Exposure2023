@@ -78,17 +78,6 @@ def keyboard_listener():
     #time.sleep(10)
     #selected_index = min(len(video_files) - 1, selected_index + 1)
 
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    selected_index = max(0, selected_index - 1)
-                elif event.key == pygame.K_DOWN:
-                    selected_index = min(len(video_files) - 1, selected_index + 1)
-                elif event.key == pygame.K_RETURN:
-                    selected_video = video_files[selected_index]
-
 if __name__ == "__main__":
     video_dir = folder_path
     video_files = [f for f in os.listdir(video_dir) if f.endswith(".mp4")]
