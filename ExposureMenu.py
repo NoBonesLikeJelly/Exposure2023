@@ -86,7 +86,7 @@ def keyboard_listener():
                     selected_video = video_files[selected_index]
 
 if __name__ == "__main__":
-    video_dir = "./TestExposureRaspi/TestVideos/"
+    video_dir = folder_path
     video_files = [f for f in os.listdir(video_dir) if f.endswith(".mp4")]
 
     keyboard_thread = threading.Thread(target=keyboard_listener)
