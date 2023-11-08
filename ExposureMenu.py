@@ -99,9 +99,15 @@ def play_video(video_file):
     #vlc_player = subprocess.Popen(vlc_command, shell=True)
     #vlc_player.wait()
     events = player.event_manager()
-    events.event_attach(vlc.EventType.MediaPlayerEndReached, player.stop())
+    events.event_attach(vlc.EventType.MediaPlayerEndReached, stop_video)
+
+def stop_video(event):
+    global video_playing, player
+    player.stop()
     load_menu()
     video_playing = False
+
+
 
 
 
