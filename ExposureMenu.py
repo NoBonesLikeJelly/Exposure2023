@@ -70,6 +70,10 @@ def next_key():
         data = data.strip()
         if data:
             break
+    while True:
+        more_data = sock.recv(128, socket.MSG_DONTWAIT)
+        if not more_data:
+            break
 
     time.sleep(1)
 
