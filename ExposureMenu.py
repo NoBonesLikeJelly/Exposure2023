@@ -14,6 +14,8 @@ sock = None
 video_directory = "/mnt/usbdrive0/"
 #video_directory = "./TestExposureRaspi/TestVideos/"
 
+selected_index = 0
+
 def get_menu_items(video_directory):
     menu_items = []
     for filename in os.listdir(video_directory):
@@ -88,6 +90,7 @@ def play_video(video_file):
 
 
 def input_listener():
+    global selected_index
     while True:
         keyname, updown = next_key()
         if keyname.decode('utf-8') == "KEY_DOWN":
@@ -101,8 +104,6 @@ def input_listener():
             pygame.quit()
         print(keyname.decode('utf-8'))
 
-
-selected_index = 0
 
 # Main menu loop
 
