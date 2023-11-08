@@ -101,20 +101,23 @@ def play_video(video_file):
 
 
 def input_listener():
-    global selected_index, vlc_player, ir_selected
+    global selected_index, vlc_player, ir_selected, video_playing
     while True:
-        keyname, updown = next_key()
-        if keyname.decode('utf-8') == "KEY_DOWN" and updown.decode('utf-8') == "00":
-            selected_index = (selected_index + 1) % len(video_files)
-        elif keyname.decode('utf-8') == "KEY_UP" and updown.decode('utf-8') == "00":
-            selected_index = (selected_index - 1) % len(video_files)
-        elif keyname.decode('utf-8') == "KEY_OK" and updown.decode('utf-8') == "00":
-            selected_video = os.path.join(video_directory, video_files[selected_index][0])
-            ir_selected = True
-            #play_video(selected_video)
-        elif keyname.decode('utf-8') == "KEY_BACK" and updown.decode('utf-8') == "00":
-            pygame.quit()
-        print(keyname.decode('utf-8'))
+        if video_playing:
+            return
+        else:
+            keyname, updown = next_key()
+            if keyname.decode('utf-8') == "KEY_DOWN" and updown.decode('utf-8') == "00":
+                selected_index = (selected_index + 1) % len(video_files)
+            elif keyname.decode('utf-8') == "KEY_UP" and updown.decode('utf-8') == "00":
+                selected_index = (selected_index - 1) % len(video_files)
+            elif keyname.decode('utf-8') == "KEY_OK" and updown.decode('utf-8') == "00":
+                selected_video = os.path.join(video_directory, video_files[selected_index][0])
+                ir_selected = True
+                #play_video(selected_video)
+            elif keyname.decode('utf-8') == "KEY_BACK" and updown.decode('utf-8') == "00":
+                pygame.quit()
+            print(keyname.decode('utf-8'))
 
 
 # Main menu loop
