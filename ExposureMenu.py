@@ -5,6 +5,7 @@ import pygame
 import socket
 import time
 from pygame.locals import *
+import vlctest
 
 SOCKPATH = "/var/run/lirc/lircd"
 
@@ -38,6 +39,9 @@ RED = (255, 0, 0)
 
 # Initialize VLC subprocess
 vlc_player = None
+
+instance = vlctest.Instance()
+player = instance.media_player_new()
 
 
 def load_menu():
