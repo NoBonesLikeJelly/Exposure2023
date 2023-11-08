@@ -71,6 +71,8 @@ def next_key():
         if data:
             break
 
+    time.sleep(1)
+
     words = data.split()
     return words[2], words[1]
 
