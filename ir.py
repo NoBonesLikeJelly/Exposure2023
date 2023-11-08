@@ -1,11 +1,6 @@
-#!/usr/bin/env python
-
-# Read lirc output, in order to sense key presses on an IR remote.
-# There are various Python packages that claim to do this but
-# they tend to require elaborate setup and I couldn't get any to work.
-# This approach requires a lircd.conf but does not require a lircrc.
-# If irw works, then in theory, this should too.
-# Based on irw.c, https://github.com/aldebaran/lirc/blob/master/tools/irw.c
+# This script is based on the following script: https://github.com/akkana/scripts/blob/master/rpi/pyirw.py
+# It opens a socket connection to the lirc daemon and parses the commands that the daemon receives
+# It then checks whether a specific command was received and generates output accordingly
 
 import socket
 
@@ -13,28 +8,43 @@ SOCKPATH = "/var/run/lirc/lircd"
 
 sock = None
 
+# Establish a socket connection to the lirc daemon
 def init_irw():
     global sock
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-    print ('starting up on %s' % SOCKPATH)
     sock.connect(SOCKPATH)
+    print ('Socket connection established!')
+    print ('Ready...')
 
-def next_key():
-    '''Get the next key pressed. Return keyname, updown.
-    '''
+# parse the output from the daemon socket
+def getKey():
     while True:
         data = sock.recv(128)
-        # print("Data: " + data)
         data = data.strip()
-        if data:
-            break
 
-    words = data.split()
-    return words[2], words[1]
+        if (len(data) > 0):
+              break
+        words = data.split()
+        return words[2], words[1]
 
+# Main entry point
+# The try/except structures allows the users to exit out of the program
+# with Ctrl + C. Doing so will close the socket gracefully.
 if __name__ == '__main__':
-    init_irw()
+    try:
+        init_irw()
 
-    while True:
-        keyname, updown = next_key()
-        print('%s (%s)' % (keyname, updown))
+        while True:
+            key, dir = getKey()
+            key = key.decode() # This variable contains the name of the key
+            dir = dir.decode() # This variable contains the direction (pressed/released)
+            print(key)
+            # Only print the name when the key is pressed (and not released)
+            #if (dir == '01' and key == 'KEY_POWER'):
+            #    print("POWER KEY PRESSED!")
+    except KeyboardInterrupt:
+        print ("\nShutting down...")
+        # Close the socket (if it exists)
+        if (sock != None):
+            sock.close()
+        print ("Done!")

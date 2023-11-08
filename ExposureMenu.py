@@ -2,8 +2,14 @@ import os
 import subprocess
 import threading
 import pygame
+import socket
 import time
 from pygame.locals import *
+
+
+SOCKPATH = "/var/run/lirc/lircd"
+
+sock = None
 
 # Define your video directory and list of video files
 video_directory = "/mnt/usbdrive0/"
