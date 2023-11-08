@@ -78,6 +78,9 @@ def next_key():
     time.sleep(1)
 
     words = data.split()
+    print("Checking other format...")
+    print(words)
+
     return words[2], words[1]
 
 def play_video(video_file):
