@@ -71,7 +71,7 @@ def next_key():
             break
         data += chunk
 
-    responses = data.split(b'\n')  # Split data into individual responses based on a delimiter (e.g., newline)
+    responses = data.split()  # Split data into individual responses based on a delimiter (e.g., newline)
     
     for response in responses:
         response = response.strip()
