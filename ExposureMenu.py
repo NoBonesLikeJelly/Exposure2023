@@ -116,7 +116,7 @@ def input_listener():
     while True:
         if video_playing:
             if keyname.decode('utf-8') == "KEY_BACK" and updown.decode('utf-8') == "00":
-                player.stop()
+                stop_video()
         else:
             keyname, updown = next_key()
             if keyname.decode('utf-8') == "KEY_DOWN" and updown.decode('utf-8') == "00":
@@ -159,7 +159,7 @@ if __name__ == "__main__":
                 
                 if video_playing:
                     if event.key == K_ESCAPE:
-                        player.stop()
+                        stop_video()
                 else:
                     if event.type == QUIT:
                         running = False
