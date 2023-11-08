@@ -72,7 +72,8 @@ def next_key():
             break
 
     words = data.split()
-    print(words.strip())
+    print("Data")
+    print(words)
 
     return words[2], words[1]
 
