@@ -29,6 +29,8 @@ video_files = get_menu_items(video_directory)
 
 video_playing = False
 
+ir_selected = False
+
 screen = None
 font = None
 
@@ -99,7 +101,7 @@ def play_video(video_file):
 
 
 def input_listener():
-    global selected_index, vlc_player
+    global selected_index, vlc_player, ir_selected
     while True:
         keyname, updown = next_key()
         if keyname.decode('utf-8') == "KEY_DOWN" and updown.decode('utf-8') == "00":
@@ -108,7 +110,8 @@ def input_listener():
             selected_index = (selected_index - 1) % len(video_files)
         elif keyname.decode('utf-8') == "KEY_OK" and updown.decode('utf-8') == "00":
             selected_video = os.path.join(video_directory, video_files[selected_index][0])
-            play_video(selected_video)
+            ir_selected = True
+            #play_video(selected_video)
         elif keyname.decode('utf-8') == "KEY_BACK" and updown.decode('utf-8') == "00":
             pygame.quit()
         print(keyname.decode('utf-8'))
@@ -137,6 +140,10 @@ if __name__ == "__main__":
                 screen.blit(text, text_rect)
 
             pygame.display.flip()
+
+            if ir_selected:
+                ir_selected = False
+                play_video(selected_video)
 
             for event in pygame.event.get():
                 if event.type == QUIT:
