@@ -64,10 +64,10 @@ def play_video(video_file):
 
 
 def input_listener():
-    
-    time.sleep(5)
-    selected_video = os.path.join(video_directory, video_files[selected_index])
-    play_video(selected_video)
+    return
+    #time.sleep(5)
+    #selected_video = os.path.join(video_directory, video_files[selected_index])
+    #play_video(selected_video)
 
 
 selected_index = 0
