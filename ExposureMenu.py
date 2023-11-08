@@ -5,7 +5,7 @@ import pygame
 import socket
 import time
 from pygame.locals import *
-import vlctest
+import vlc
 
 SOCKPATH = "/var/run/lirc/lircd"
 
@@ -22,7 +22,7 @@ def get_menu_items(video_directory):
     for filename in os.listdir(video_directory):
         if filename.lower().endswith(".mp4") or filename.lower().endswith(".mov") and  os.path.isfile(os.path.join(video_directory, filename)):
             #image_filename = os.path.splitext(filename)[0] + ".png"
-            menu_items.append((filename))
+            menu_items.append((filename,f"Play {os.path.splitext(filename)[0]}"))
     return menu_items
 
 video_files = get_menu_items(video_directory)
@@ -37,15 +37,24 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 
+SCREEN_WIDTH = None
+SCREEN_HEIGHT = None
+
 # Initialize VLC subprocess
 vlc_player = None
 
-instance = vlctest.Instance()
+instance = vlc.Instance()
 player = instance.media_player_new()
+
+video_file = video_file = "/mnt/usbdrive0/In_Her_Steps.mov"
+media = instance.media_new(video_file)
+player.set_media(media)
+
+player.set_fullscreen(True)
 
 
 def load_menu():
-    global screen, font
+    global screen, font, SCREEN_WIDTH, SCREEN_HEIGHT
     # Pygame initialization
     pygame.init()
     pygame.display.set_caption("Video Player Menu")
@@ -87,8 +96,8 @@ def play_video(video_file):
         vlc_player.terminate()
     video_playing = True
     pygame.quit()
-    #vlc_command = f"sudo -u twilliams /Applications/VLC.app/Contents/MacOS/VLC '{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
-    vlc_command = f"cvlc '{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
+    vlc_command = f"sudo -u twilliams /Applications/VLC.app/Contents/MacOS/VLC '{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
+    #vlc_command = f"cvlc '{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
     vlc_player = subprocess.Popen(vlc_command, shell=True)
     vlc_player.wait()
     load_menu()
@@ -105,7 +114,7 @@ def input_listener():
         elif keyname.decode('utf-8') == "KEY_UP" and updown.decode('utf-8') == "00":
             selected_index = (selected_index - 1) % len(video_files)
         elif keyname.decode('utf-8') == "KEY_OK" and updown.decode('utf-8') == "00":
-            selected_video = os.path.join(video_directory, video_files[selected_index])
+            selected_video = os.path.join(video_directory, video_files[selected_index][0])
             play_video(selected_video)
         elif keyname.decode('utf-8') == "KEY_BACK" and updown.decode('utf-8') == "00":
             pygame.quit()
@@ -116,7 +125,7 @@ def input_listener():
 
 if __name__ == "__main__":
 
-    init_irw()
+    #init_irw()
 
     input_thread = threading.Thread(target=input_listener)
     input_thread.daemon = True
@@ -124,13 +133,19 @@ if __name__ == "__main__":
 
     load_menu()
 
+    time.sleep(10)
+
+    player.play()
+
     running = True
     while running:
         while not video_playing:
             screen.fill(BLACK)
-            for i, video_file in enumerate(video_files):
-                text = font.render(video_file, True, RED if i == selected_index else WHITE)
-                screen.blit(text, (50, 50 + i * 40))
+            for i, (video_file, video_name) in enumerate(video_files):
+                text = font.render(video_name, True, RED if i == selected_index else WHITE)
+                text_rect = text.get_rect()
+                text_rect.center = (SCREEN_WIDTH // 2, 50 + i * 40)  # Center horizontally, maintain vertical position
+                screen.blit(text, text_rect)
 
             pygame.display.flip()
 
@@ -143,7 +158,7 @@ if __name__ == "__main__":
                     elif event.key == K_UP:
                         selected_index = (selected_index - 1) % len(video_files)
                     elif event.key == K_RETURN:
-                        selected_video = os.path.join(video_directory, video_files[selected_index])
+                        selected_video = os.path.join(video_directory, video_files[selected_index][0])
                         play_video(selected_video)
                     elif event.key == K_ESCAPE:
                         pygame.quit()
