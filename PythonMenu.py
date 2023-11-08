@@ -44,8 +44,8 @@ screen = None
 menu_items = None
 menu_images = None
 selected_item = 0
-folder_path = "/mnt/usbdrive0/TestExposureRaspi/TestVideos/"
-#folder_path = "./TestExposureRaspi/TestVideos/"
+#folder_path = "/mnt/usbdrive0/TestExposureRaspi/TestVideos/"
+folder_path = "./TestExposureRaspi/TestVideos/"
 
 def init_screen():
     return pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
@@ -93,8 +93,8 @@ def run_vlc(folder_path, video_file):
     global screen
     try:
         close_screen()
- #       vlc_command = f"sudo -u twilliams /Applications/VLC.app/Contents/MacOS/VLC '{folder_path}{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
-        vlc_command = f"sudo -u pi cvlc '{folder_path}{video_file}' --no-repeat --play-and-exit --fullscreen --no-xlib"  # Replace with the appropriate VLC command
+        vlc_command = f"sudo -u twilliams /Applications/VLC.app/Contents/MacOS/VLC '{folder_path}{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
+ #       vlc_command = f"sudo -u pi cvlc '{folder_path}{video_file}' --no-repeat --play-and-exit --fullscreen --no-xlib"  # Replace with the appropriate VLC command
         open_screen()
         process = subprocess.Popen(vlc_command, shell=True)
         process.wait()
@@ -239,6 +239,8 @@ def update_position(key):
 
 def main():
 
+    screen = open_screen()
+
     global menu_items, menu_images, videoPlaying  # Declare menu_items and menu_images as global
 
     menu_items = get_menu_items(folder_path)
@@ -278,6 +280,6 @@ def main():
 
 
 if __name__ == "__main__":
-    screen = open_screen()  # Open the Pygame screen at the beginning
+      # Open the Pygame screen at the beginning
     main()
     close_screen()
