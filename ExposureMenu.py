@@ -63,7 +63,7 @@ def load_menu():
     SCREEN_WIDTH = monitor_info.current_w
     SCREEN_HEIGHT = monitor_info.current_h
 
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
     font = pygame.font.Font(None, 36)
     pygame.mouse.set_visible(False)
 
