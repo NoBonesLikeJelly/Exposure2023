@@ -172,6 +172,7 @@ if __name__ == "__main__":
                     elif event.key == K_RETURN:
                         selected_video = os.path.join(video_directory, video_files[selected_index][0])
                     elif event.type == IR_Event_Type:
+                        print("Event triggerereed")
                         play_video(selected_video)
                     elif event.key == K_ESCAPE:
                         pygame.quit()
