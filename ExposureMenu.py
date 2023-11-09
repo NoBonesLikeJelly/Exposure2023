@@ -5,7 +5,6 @@ import pygame
 import socket
 import time
 from pygame.locals import *
-import pydirectinput
 
 
 SOCKPATH = "/var/run/lirc/lircd"
