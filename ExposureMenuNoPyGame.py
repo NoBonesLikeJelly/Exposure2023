@@ -74,6 +74,14 @@ def display_menu(stdscr, video_files, selected_video_idx):
             stdscr.addstr(center_y + i - len(video_files) // 2, center_x - 15, f"   {video_name}")
     stdscr.refresh()
 
+def blank_screen():
+    # Use xset to blank the screen
+    subprocess.run(['xset', 'dpms', 'force', 'off'])
+
+def unblank_screen():
+    # Use xset to unblank the screen
+    subprocess.run(['xset', 'dpms', 'force', 'on'])
+
 
 def main(stdscr):
     #folder_path = "./TestExposureRaspi/TestVideos/"
@@ -82,6 +90,10 @@ def main(stdscr):
 
     selected_video_idx = 0
     key = 0
+
+    input_thread = threading.Thread(target=input_listener)
+    input_thread.daemon = True
+    input_thread.start()
 
     curses.curs_set(0) 
     init_irw()
@@ -99,7 +111,9 @@ def main(stdscr):
                 break
             selected_video = video_files[selected_video_idx]
             video_path = os.path.join(folder_path, selected_video)
+            blank_screen()
             subprocess.run(['cvlc', video_path, '--no-repeat', '--play-and-exit', '--fullscreen', '--no-video-title-show'])
+            unblank_screen()
 
             try:
                 ir_key = ir_queue.get_nowait()
