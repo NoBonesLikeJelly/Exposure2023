@@ -167,8 +167,8 @@ if __name__ == "__main__":
                     running = False
                 elif event.type == IR_Event_Type:
                     print("Event triggerereed")
-                    #selected_video = os.path.join(video_directory, video_files[selected_index][0])
-                    #play_video(selected_video)
+                    selected_video = os.path.join(video_directory, video_files[selected_index][0])
+                    play_video(selected_video)
                 elif event.type == KEYDOWN:
                     if event.key == K_DOWN:
                         selected_index = (selected_index + 1) % len(video_files)
