@@ -8,7 +8,6 @@ from pygame.locals import *
 import pydirectinput
 
 
-
 SOCKPATH = "/var/run/lirc/lircd"
 
 sock = None
@@ -34,6 +33,9 @@ video_playing = False
 
 ir_selected = False
 
+IR_Event = None
+IR_Event_Type = None
+
 screen = None
 font = None
 
@@ -51,7 +53,7 @@ vlc_player = None
 
 
 def load_menu():
-    global screen, font, SCREEN_WIDTH, SCREEN_HEIGHT
+    global screen, font, SCREEN_WIDTH, SCREEN_HEIGHT, IR_Event, IR_Event_Type
     # Pygame initialization
     pygame.init()
     pygame.display.set_caption("Video Player Menu")
@@ -64,6 +66,10 @@ def load_menu():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     font = pygame.font.Font(None, 36)
     pygame.mouse.set_visible(False)
+
+    IR_Event_Type = pygame.USEREVENT + 1
+    IR_Event = pygame.event.Event(IR_Event_Type, message="IR Event Triggered")
+
     return screen, font
 
 def init_irw():
@@ -106,7 +112,7 @@ def play_video(video_file):
 
 
 def input_listener():
-    global selected_index, vlc_player, ir_selected, video_playing
+    global selected_index, vlc_player, ir_selected, video_playing, IR_Event
     while True:
         if video_playing:
             pass
@@ -117,7 +123,7 @@ def input_listener():
             elif keyname.decode('utf-8') == "KEY_UP" and updown.decode('utf-8') == "00":
                 selected_index = (selected_index - 1) % len(video_files)
             elif keyname.decode('utf-8') == "KEY_OK" and updown.decode('utf-8') == "00":
-                pydirectinput.press('enter')
+                pygame.event.post(IR_Event)
                 #selected_video = os.path.join(video_directory, video_files[selected_index][0])
                 #ir_selected = True
                 #play_video(selected_video)
@@ -166,6 +172,7 @@ if __name__ == "__main__":
                         selected_index = (selected_index - 1) % len(video_files)
                     elif event.key == K_RETURN:
                         selected_video = os.path.join(video_directory, video_files[selected_index][0])
+                    elif event.type == IR_Event_Type:
                         play_video(selected_video)
                     elif event.key == K_ESCAPE:
                         pygame.quit()
