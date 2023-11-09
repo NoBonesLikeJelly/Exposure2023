@@ -14,6 +14,7 @@ def FindDisplayDriver():
   return False
 
 if __name__ == "__main__":
+  os.environ["SDL_FBDEV"] = "/dev/fb0"
   pygame.init()
   if not FindDisplayDriver():
     print("Failed to initialise display driver")
