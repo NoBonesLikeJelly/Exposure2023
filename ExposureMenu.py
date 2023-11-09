@@ -68,7 +68,6 @@ def load_menu():
 
     IR_Event_Type = pygame.USEREVENT + 1
     IR_Event = pygame.event.Event(IR_Event_Type, message="IR Event Triggered")
-    pygame.event.post(IR_Event)
 
     return screen, font
 
@@ -121,6 +120,7 @@ def input_listener():
             if keyname.decode('utf-8') == "KEY_DOWN" and updown.decode('utf-8') == "00":
                 selected_index = (selected_index + 1) % len(video_files)
             elif keyname.decode('utf-8') == "KEY_UP" and updown.decode('utf-8') == "00":
+                pygame.event.post(IR_Event)
                 selected_index = (selected_index - 1) % len(video_files)
             elif keyname.decode('utf-8') == "KEY_OK" and updown.decode('utf-8') == "00":
                 pygame.event.post(IR_Event)
