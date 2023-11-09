@@ -76,8 +76,8 @@ def display_menu(stdscr, video_files, selected_video_idx):
 
 
 def main(stdscr):
-    folder_path = "./TestExposureRaspi/TestVideos/"
-    #folder_path = "/mnt/usbdrive0/"
+    #folder_path = "./TestExposureRaspi/TestVideos/"
+    folder_path = "/mnt/usbdrive0/"
     video_files = get_video_files(folder_path)
 
     selected_video_idx = 0
@@ -99,7 +99,7 @@ def main(stdscr):
                 break
             selected_video = video_files[selected_video_idx]
             video_path = os.path.join(folder_path, selected_video)
-            subprocess.run(['cvlc', video_path])
+            subprocess.run([f"cvlc '{video_path}' --no-repeat --play-and-exit --fullscreen --no-video-title-show"])
 
             try:
                 ir_key = ir_queue.get_nowait()

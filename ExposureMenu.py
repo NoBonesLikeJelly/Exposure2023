@@ -100,7 +100,7 @@ def play_video(video_file):
         vlc_player.terminate()
     video_playing = True
     #vlc_command = f"sudo -u twilliams /Applications/VLC.app/Contents/MacOS/VLC '{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
-    vlc_command = f"cvlc '{video_file}' --no-repeat --play-and-exit --fullscreen"  # Replace with the appropriate VLC command
+    vlc_command = f"cvlc '{video_file}' --no-repeat --play-and-exit --fullscreen --no-video-title-show"  # Replace with the appropriate VLC command
     vlc_player = subprocess.Popen(vlc_command, shell=True)
     time.sleep(3)
     pygame.quit()
