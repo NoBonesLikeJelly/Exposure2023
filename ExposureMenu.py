@@ -34,6 +34,7 @@ ir_selected = False
 
 IR_Event = None
 IR_Event_Type = None
+IR_Event_Data = None
 
 screen = None
 font = None
@@ -67,7 +68,7 @@ def load_menu():
     pygame.mouse.set_visible(False)
 
     IR_Event_Type = pygame.USEREVENT + 1
-    IR_Event = pygame.event.Event(IR_Event_Type, message="IR Event Triggered")
+    IR_Event = pygame.event.Event(IR_Event_Type, message="IR Event Triggered",data=IR_Event_Data)
 
     return screen, font
 
@@ -111,25 +112,19 @@ def play_video(video_file):
 
 
 def input_listener():
-    global selected_index, vlc_player, ir_selected, video_playing, IR_Event
+    global selected_index, vlc_player, ir_selected, video_playing, IR_Event, IR_Event_Data
     while True:
-        if video_playing:
-            pass
-        else:
-            keyname, updown = next_key()
-            if keyname.decode('utf-8') == "KEY_DOWN" and updown.decode('utf-8') == "00":
-                selected_index = (selected_index + 1) % len(video_files)
-            elif keyname.decode('utf-8') == "KEY_UP" and updown.decode('utf-8') == "00":
-                pygame.event.post(IR_Event)
-                selected_index = (selected_index - 1) % len(video_files)
-            elif keyname.decode('utf-8') == "KEY_OK" and updown.decode('utf-8') == "00":
-                pygame.event.post(IR_Event)
-                #selected_video = os.path.join(video_directory, video_files[selected_index][0])
-                #ir_selected = True
-                #play_video(selected_video)
-            elif keyname.decode('utf-8') == "KEY_BACK" and updown.decode('utf-8') == "00":
-                pygame.quit()
-            print(keyname.decode('utf-8'))
+        keyname, updown = next_key()
+        if keyname.decode('utf-8') == "KEY_DOWN" and updown.decode('utf-8') == "00":
+            IR_Event_Data = "Down"
+        elif keyname.decode('utf-8') == "KEY_UP" and updown.decode('utf-8') == "00":
+            IR_Event_Data = "Up"
+        elif keyname.decode('utf-8') == "KEY_OK" and updown.decode('utf-8') == "00":
+            IR_Event_Data = "Enter"
+            pygame.event.post(IR_Event)
+        elif keyname.decode('utf-8') == "KEY_BACK" and updown.decode('utf-8') == "00":
+            pygame.quit()
+        print(keyname.decode('utf-8'))
 
 
 # Main menu loop
@@ -166,9 +161,17 @@ if __name__ == "__main__":
                 if event.type == QUIT:
                     running = False
                 elif event.type == IR_Event_Type:
+                    custom_data = event.data
                     print("Event triggerereed")
-                    selected_video = os.path.join(video_directory, video_files[selected_index][0])
-                    play_video(selected_video)
+                    if custom_data == "Enter":
+                        selected_video = os.path.join(video_directory, video_files[selected_index][0])
+                        play_video(selected_video)
+                    elif custom_data == "Up":
+                        selected_index = (selected_index - 1) % len(video_files)
+                    elif custom_data == "Down":
+                        selected_index = (selected_index + 1) % len(video_files)
+                    elif custom_data == "Exit":
+                        pygame.quit()
                 elif event.type == KEYDOWN:
                     if event.key == K_DOWN:
                         selected_index = (selected_index + 1) % len(video_files)
