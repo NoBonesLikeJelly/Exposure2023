@@ -117,8 +117,10 @@ def input_listener():
         keyname, updown = next_key()
         if keyname.decode('utf-8') == "KEY_DOWN" and updown.decode('utf-8') == "00":
             IR_Event.data = "Down"
+            pygame.event.post(IR_Event)
         elif keyname.decode('utf-8') == "KEY_UP" and updown.decode('utf-8') == "00":
             IR_Event.data = "Up"
+            pygame.event.post(IR_Event)
         elif keyname.decode('utf-8') == "KEY_OK" and updown.decode('utf-8') == "00":
             IR_Event.data = "Enter"
             pygame.event.post(IR_Event)
