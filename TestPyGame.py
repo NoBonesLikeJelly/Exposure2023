@@ -24,5 +24,6 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN)
     screen.fill((0x3F, 0, 0))
     pygame.display.update()
-    time.sleep(30)
+    print(pygame.display.Info())
+    time.sleep(5)
     pygame.quit()
