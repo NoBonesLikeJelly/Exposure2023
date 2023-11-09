@@ -5,14 +5,13 @@ import pygame
 import socket
 import time
 from pygame.locals import *
-from pynput.keyboard import Controller, Key
+import pydirectinput
+
 
 
 SOCKPATH = "/var/run/lirc/lircd"
 
 sock = None
-
-keyboard = Controller()
 
 # Define your video directory and list of video files
 video_directory = "/mnt/usbdrive0/"
@@ -118,8 +117,7 @@ def input_listener():
             elif keyname.decode('utf-8') == "KEY_UP" and updown.decode('utf-8') == "00":
                 selected_index = (selected_index - 1) % len(video_files)
             elif keyname.decode('utf-8') == "KEY_OK" and updown.decode('utf-8') == "00":
-                keyboard.press(Key.enter)
-                keyboard.release(Key.enter)
+                pydirectinput.press('enter')
                 #selected_video = os.path.join(video_directory, video_files[selected_index][0])
                 #ir_selected = True
                 #play_video(selected_video)
