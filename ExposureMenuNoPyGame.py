@@ -112,20 +112,23 @@ def main(stdscr):
             video_path = os.path.join(folder_path, selected_video)
             subprocess.run(['cvlc', video_path, '--no-repeat', '--play-and-exit', '--fullscreen', '--no-video-title-show'])
 '''
-    while True:
+    while key != ord('0'):
+        display_menu(stdscr, video_files, selected_video_idx)
+        key = stdscr.getch()
         try:
             #display_menu(stdscr, video_files, selected_video_idx)
             ir_key = ir_queue.get_nowait()
             print(ir_key)
             # Handle the IR keypress (e.g., perform actions based on the key)
-            if ir_key == 'Enter':
-                # Play the selected video
+            if ir_key == "Enter":
+                if selected_video_idx == len(video_files):
+                    break
                 selected_video = video_files[selected_video_idx]
                 video_path = os.path.join(folder_path, selected_video)
                 subprocess.run(['cvlc', video_path, '--no-repeat', '--play-and-exit', '--fullscreen', '--no-video-title-show'])
-            elif ir_key == 'Down':
+            elif ir_key == "Down":
                 selected_video_idx += 1
-            elif ir_key == 'Up':
+            elif ir_key == "Up":
                 selected_video_idx -= 1
         except queue.Empty:
             pass
