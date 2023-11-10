@@ -4,6 +4,7 @@ import curses
 import socket
 import threading
 import queue 
+import pyautogui
 
 # Define a queue for IR keypress notifications
 ir_queue = queue.Queue()
@@ -35,12 +36,12 @@ def next_key():
     return words[2], words[1]
 
 def input_listener():
-    global selected_index, vlc_player, ir_selected, video_playing, IR_Event, IR_Event_Data
     while True:
         keyname, updown = next_key()
         if keyname.decode('utf-8') == "KEY_DOWN" and updown.decode('utf-8') == "00":
-            key = "Down"
-            ir_queue.put(key)
+            #key = "Down"
+            #ir_queue.put(key)
+            pyautogui.press('a')
         elif keyname.decode('utf-8') == "KEY_UP" and updown.decode('utf-8') == "00":
             key = "Up"
             ir_queue.put(key)
@@ -82,7 +83,6 @@ def unblank_screen():
     # Use xset to unblank the screen
     subprocess.run(['xset', 'dpms', 'force', 'on'])
 
-
 def main(stdscr):
     #folder_path = "./TestExposureRaspi/TestVideos/"
     folder_path = "/mnt/usbdrive0/"
@@ -121,16 +121,16 @@ def main(stdscr):
             ir_key = ir_queue.get_nowait()
             print(ir_key)
             # Handle the IR keypress (e.g., perform actions based on the key)
-            if ir_key == "Enter":
+            if ir_key == "Down":
+                selected_video_idx += 1
+            elif ir_key == "Up":
+                selected_video_idx -= 1
+            elif ir_key == "Enter":
                 if selected_video_idx == len(video_files):
                     break
                 selected_video = video_files[selected_video_idx]
                 video_path = os.path.join(folder_path, selected_video)
                 subprocess.run(['cvlc', video_path, '--no-repeat', '--play-and-exit', '--fullscreen', '--no-video-title-show'])
-            elif ir_key == "Down":
-                selected_video_idx += 1
-            elif ir_key == "Up":
-                selected_video_idx -= 1
         except queue.Empty:
             pass
 
