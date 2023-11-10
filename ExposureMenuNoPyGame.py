@@ -84,8 +84,8 @@ def unblank_screen():
 
 
 def main(stdscr):
-    folder_path = "./TestExposureRaspi/TestVideos/"
-    #folder_path = "/mnt/usbdrive0/"
+    #folder_path = "./TestExposureRaspi/TestVideos/"
+    folder_path = "/mnt/usbdrive0/"
     video_files = get_video_files(folder_path)
 
     selected_video_idx = 0
@@ -136,5 +136,5 @@ def main(stdscr):
 
 
 if __name__ == "__main__":
-    #init_irw()
+    init_irw()
     curses.wrapper(main)
