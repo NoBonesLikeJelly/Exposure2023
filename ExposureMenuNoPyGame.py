@@ -111,9 +111,7 @@ def main(stdscr):
                 break
             selected_video = video_files[selected_video_idx]
             video_path = os.path.join(folder_path, selected_video)
-            blank_screen()
             subprocess.run(['cvlc', video_path, '--no-repeat', '--play-and-exit', '--fullscreen', '--no-video-title-show'])
-            unblank_screen()
 
             try:
                 ir_key = ir_queue.get_nowait()
