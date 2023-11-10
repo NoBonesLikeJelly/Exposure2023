@@ -84,8 +84,8 @@ def unblank_screen():
 
 
 def main(stdscr):
-    #folder_path = "./TestExposureRaspi/TestVideos/"
-    folder_path = "/mnt/usbdrive0/"
+    folder_path = "./TestExposureRaspi/TestVideos/"
+    #folder_path = "/mnt/usbdrive0/"
     video_files = get_video_files(folder_path)
 
     selected_video_idx = 0
@@ -96,27 +96,28 @@ def main(stdscr):
     input_thread.start()
 
     curses.curs_set(0) 
-    '''
+    
     while key != ord('0'):
         display_menu(stdscr, video_files, selected_video_idx)
         key = stdscr.getch()
-
         if key == curses.KEY_DOWN and selected_video_idx < len(video_files) - 1:
-            selected_video_idx += 1
+            key = "Down"
+            ir_queue.put(key)
+            #selected_video_idx += 1
         elif key == curses.KEY_UP and selected_video_idx > 0:
-            selected_video_idx -= 1
+            key = "Up"
+            ir_queue.put(key)
+            #selected_video_idx -= 1
         elif key == 10:  # Enter key
             if selected_video_idx == len(video_files):
                 break
             selected_video = video_files[selected_video_idx]
             video_path = os.path.join(folder_path, selected_video)
             subprocess.run(['cvlc', video_path, '--no-repeat', '--play-and-exit', '--fullscreen', '--no-video-title-show'])
-'''
-    while key != ord('0'):
-        display_menu(stdscr, video_files, selected_video_idx)
-        key = stdscr.getch()
+
         try:
             #display_menu(stdscr, video_files, selected_video_idx)
+            print("Im trying something herhe")
             ir_key = ir_queue.get_nowait()
             print(ir_key)
             # Handle the IR keypress (e.g., perform actions based on the key)
@@ -135,5 +136,5 @@ def main(stdscr):
 
 
 if __name__ == "__main__":
-    init_irw()
+    #init_irw()
     curses.wrapper(main)
