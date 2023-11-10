@@ -49,7 +49,7 @@ def input_listener():
             ir_queue.put(key)
         elif keyname.decode('utf-8') == "KEY_BACK" and updown.decode('utf-8') == "00":
             exit()
-        print(keyname.decode('utf-8'))
+        #print(keyname.decode('utf-8'))
 
 
 def get_video_files(folder_path):
