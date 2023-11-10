@@ -49,7 +49,7 @@ def input_listener():
             ir_queue.put(key)
         elif keyname.decode('utf-8') == "KEY_BACK" and updown.decode('utf-8') == "00":
             exit()
-        print(keyname.decode('utf-8'))
+        #print(keyname.decode('utf-8'))
 
 
 def get_video_files(folder_path):
@@ -112,21 +112,21 @@ def main(stdscr):
             video_path = os.path.join(folder_path, selected_video)
             subprocess.run(['cvlc', video_path, '--no-repeat', '--play-and-exit', '--fullscreen', '--no-video-title-show'])
 
-            try:
-                ir_key = ir_queue.get_nowait()
-                print(ir_key)
-                # Handle the IR keypress (e.g., perform actions based on the key)
-                if ir_key == 'Enter':
-                    # Play the selected video
-                    selected_video = video_files[selected_video_idx]
-                    video_path = os.path.join(folder_path, selected_video)
-                    subprocess.run(['cvlc', video_path, '--no-repeat', '--play-and-exit', '--fullscreen', '--no-video-title-show'])
-                elif ir_key == 'Down':
-                    selected_video_idx += 1
-                elif ir_key == 'Up':
-                    selected_video_idx -= 1
-            except queue.Empty:
-                pass
+        try:
+            ir_key = ir_queue.get_nowait()
+            print(ir_key)
+            # Handle the IR keypress (e.g., perform actions based on the key)
+            if ir_key == 'Enter':
+                # Play the selected video
+                selected_video = video_files[selected_video_idx]
+                video_path = os.path.join(folder_path, selected_video)
+                subprocess.run(['cvlc', video_path, '--no-repeat', '--play-and-exit', '--fullscreen', '--no-video-title-show'])
+            elif ir_key == 'Down':
+                selected_video_idx += 1
+            elif ir_key == 'Up':
+                selected_video_idx -= 1
+        except queue.Empty:
+            pass
 
 
 if __name__ == "__main__":
