@@ -96,7 +96,6 @@ def main(stdscr):
     input_thread.start()
 
     curses.curs_set(0) 
-    init_irw()
 
     while key != ord('0'):
         display_menu(stdscr, video_files, selected_video_idx)
@@ -131,4 +130,5 @@ def main(stdscr):
 
 
 if __name__ == "__main__":
+    init_irw()
     curses.wrapper(main)
