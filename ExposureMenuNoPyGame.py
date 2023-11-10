@@ -96,7 +96,7 @@ def main(stdscr):
     input_thread.start()
 
     curses.curs_set(0) 
-
+    '''
     while key != ord('0'):
         display_menu(stdscr, video_files, selected_video_idx)
         key = stdscr.getch()
@@ -111,8 +111,10 @@ def main(stdscr):
             selected_video = video_files[selected_video_idx]
             video_path = os.path.join(folder_path, selected_video)
             subprocess.run(['cvlc', video_path, '--no-repeat', '--play-and-exit', '--fullscreen', '--no-video-title-show'])
-
+'''
+    while True:
         try:
+            display_menu(stdscr, video_files, selected_video_idx)
             ir_key = ir_queue.get_nowait()
             print(ir_key)
             # Handle the IR keypress (e.g., perform actions based on the key)
