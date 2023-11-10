@@ -114,7 +114,7 @@ def main(stdscr):
 '''
     while True:
         try:
-            display_menu(stdscr, video_files, selected_video_idx)
+            #display_menu(stdscr, video_files, selected_video_idx)
             ir_key = ir_queue.get_nowait()
             print(ir_key)
             # Handle the IR keypress (e.g., perform actions based on the key)
