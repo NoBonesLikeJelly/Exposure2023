@@ -41,7 +41,7 @@ def input_listener():
         if keyname.decode('utf-8') == "KEY_DOWN" and updown.decode('utf-8') == "00":
             #key = "Down"
             #ir_queue.put(key)
-            pyautogui.press('a')
+            pyautogui.press('down')
         elif keyname.decode('utf-8') == "KEY_UP" and updown.decode('utf-8') == "00":
             key = "Up"
             ir_queue.put(key)
